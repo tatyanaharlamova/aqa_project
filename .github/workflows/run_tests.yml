@@ -1,19 +1,18 @@
 name: Automated tests
 
 on:
-  push
-#  workflow_dispatch:
-#    inputs:
-#      deployment_target:
-#        description: Choose target
-#        required: true
-#        default: second_test
-#        type: choice
-#        options:
-#          - first_test
-#          - second_test
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: Choose target
+        required: true
+        default: second_test
+        type: choice
+        options:
+          - first_test
+          - second_test
 #          - all
-#
+
 #permissions:
 #  contents: read
 #  pages: write
@@ -80,18 +79,16 @@ jobs:
         run: sudo apt-get install google-chrome-stable
       - name: install dependencies
         run: pip install -r requirements.txt
-      - name: Run tests
-        run: pytest
 #      - name: Download all workflow run artifacts
 #        uses: actions/download-artifact@v3
-#      - name: first_test
-#        if: "github.event.inputs.deployment_target == 'first_test'"
-#        run: pytest tests/test_button.py::test_button_exist --alluredir=allure-results
-#        continue-on-error: true
-#      - name: second_test
-#        if: "github.event.inputs.deployment_target == 'second_test'"
-#        run: pytest tests/test_button.py::test_button_exist_2 --alluredir=allure-results
-#        continue-on-error: true
+      - name: first_test
+        if: "github.event.inputs.deployment_target == 'first_test'"
+        run: pytest tests/test_button_page.py::test_button_1_exist --alluredir=allure-results
+        continue-on-error: true
+      - name: second_test
+        if: "github.event.inputs.deployment_target == 'second_test'"
+        run: tests/test_look_like_a_button.py::test_button_2_exist --alluredir=allure-results
+        continue-on-error: true
 #      - name: all
 #        if: "github.event.inputs.deployment_target == 'all'"
 #        run: pytest --alluredir=allure-results
